@@ -9,9 +9,14 @@ from sqlalchemy import ForeignKey
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from flask_gravatar import Gravatar
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get("FlaskBlogSecretKey")
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 login_manager = LoginManager()
