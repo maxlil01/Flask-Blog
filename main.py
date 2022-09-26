@@ -27,6 +27,8 @@ login_manager.login_view = "get_all_posts"
 database_url = os.environ.get("DATABASE_URL")
 if database_url is None:
     database_url = 'sqlite:///blog.db'
+else:
+    database_url = database_url.replace("postgres://", "postgresql://")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -66,7 +68,7 @@ class Comment(db.Model, UserMixin):
     post_id = db.Column(db.Integer, ForeignKey("blog_posts.id"))
 
 
-db.create_all()
+# db.create_all()
 
 
 def admin_only(func):
