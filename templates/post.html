@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block content %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{post.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{post.title}}</h1>
+            <h2 class="subheading">{{post.subtitle}}</h2>
+            <span class="meta">Posted by
+              <a href="#">{{post.author.name}}</a>
+              on {{post.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {{ post.body|safe }}
+          <hr>
+          {% if current_user.id == 1 %}
+            <div class="clearfix">
+            <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
+            </div>
+          {% endif %}
+
+          {% if current_user.is_authenticated %}
+          {{ render_form(form, button_style="success", novalidate=True) }}
+          {{ ckeditor.load() }}
+          {{ ckeditor.config(name='body') }}
+          {% endif %}
+
+<!--           Comments Area -->
+          <div class="col-lg-8 col-md-10 mx-auto comment">
+              <ul class="commentList">
+                {% for comment in comments %}
+                <li>
+                    <div class="commenterImage">
+                      <img src="https://www.artdatabanken.se/globalassets/ew/subw/artd/1-om-arter-och-natur/dagens-natur/var-2018/skata-foto-tomas-carlberg.jpg?width=480&height=480&mode=crop"/>
+                    </div>
+                    <div class="commentText">
+                      {{ comment.text | safe }}
+                      <span class="date sub-text">{{ comment.comment_author.name}}</span>
+                    </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+{% endblock %}
