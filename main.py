@@ -23,7 +23,12 @@ login_manager.init_app(app)
 login_manager.login_view = "get_all_posts"
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL_UPDATED', 'sqlite:///blog.db')
+
+database_url = os.environ.get("DATABASE_URL")
+if database_url is None:
+    database_url = 'sqlite:///blog.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
